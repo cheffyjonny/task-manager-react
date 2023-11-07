@@ -1,3 +1,5 @@
+This is a react project with local enviroment. It has been set up with json server. It has to run with it.
+
 ### `npm start`
 
 Runs the app in the development mode.\

@@ -61,6 +61,7 @@ body {
   margin: 5px;
   padding: 10px 20px;
   cursor: pointer;
+  border-radius: 10px;
 }
 
 .task.reminder {
@@ -116,4 +117,8 @@ footer {
 a {
   /* text-decoration: none; */
   color: black;
+}
+
+input {
+  border-radius: 10px;
 }

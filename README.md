@@ -1,4 +1,4 @@
-This is a react project with local enviroment. It has been set up with json server. It has to run with it.
+This is a react project with local backend server(json server) enviroment. It must run up the project with json server.
 
 ### `npm start`
 

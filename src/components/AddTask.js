@@ -28,6 +28,7 @@ const AddTask = ({ onAdd }) => {
       <div className='form-control'>
         <label>Task</label>
         <input
+          autoFocus
           type='text'
           placeholder='Add Task'
           value={text}

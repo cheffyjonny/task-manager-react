@@ -1,10 +1,10 @@
-import Task from './Task'
+import Event from './Event'
 
-const Tasks = ({ tasks, onDelete, onToggle }) => {
+const Events = ({ events, onDelete, onToggle }) => {
   return (
     <>
-      {tasks.map((task) => (
-        <Task
+      {events.map((task) => (
+        <Event
           key={task.id}
           task={task}
           onDelete={onDelete}
@@ -18,4 +18,4 @@ const Tasks = ({ tasks, onDelete, onToggle }) => {
   )
 }
 
-export default Tasks
+export default Events

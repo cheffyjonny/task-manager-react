@@ -1,6 +1,9 @@
 import { FaTimes } from 'react-icons/fa'
+import moment from 'moment'
 
-const Task = ({ task, onDelete, onToggle }) => {
+const Event = ({ task, onDelete, onToggle }) => {
+  let formattedDate = moment(task.date).format('MMM Do YYYY')
+
   return (
     <div
       className={`task ${task.reminder ? 'reminder' : ''}`}
@@ -13,9 +16,9 @@ const Task = ({ task, onDelete, onToggle }) => {
           onClick={() => onDelete(task.id)}
         />
       </h3>
-      <p>{task.day}</p>
+      <p>{formattedDate}</p>
     </div>
   )
 }
 
-export default Task
+export default Event

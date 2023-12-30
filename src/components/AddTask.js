@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import PopupModal from './PopupModal'
 
 const AddTask = ({ onAdd }) => {
   const [text, setText] = useState('')
-  const [day, setDay] = useState('')
+  const [date, setDate] = useState(new Date())
   const [reminder, setReminder] = useState(false)
 
   const onSubmit = (e) => {
@@ -13,11 +14,15 @@ const AddTask = ({ onAdd }) => {
       return
     }
 
-    onAdd({ text, day, reminder })
+    onAdd({ text, date, reminder })
 
     setText('')
-    setDay('')
+    setDate(new Date())
     setReminder(false)
+  }
+
+  const handleChangeDate = (e) => {
+    setDate(e)
   }
 
   return (
@@ -26,22 +31,22 @@ const AddTask = ({ onAdd }) => {
       onSubmit={onSubmit}
     >
       <div className='form-control'>
-        <label>Task</label>
+        <label>Event</label>
         <input
           autoFocus
           type='text'
-          placeholder='Add Task'
+          placeholder='Add Event'
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
       </div>
       <div className='form-control'>
-        <label>Day & Time</label>
-        <input
-          type='text'
-          placeholder='Add Day & Time'
-          value={day}
-          onChange={(e) => setDay(e.target.value)}
+        <label>Date</label>
+        <PopupModal
+          onChangeDate={(e) => {
+            handleChangeDate(e)
+          }}
+          date={date}
         />
       </div>
       <div className='form-control form-control-check'>
@@ -56,7 +61,7 @@ const AddTask = ({ onAdd }) => {
 
       <input
         type='submit'
-        value='Save Task'
+        value='Save Event'
         className='btn btn-block'
       />
     </form>

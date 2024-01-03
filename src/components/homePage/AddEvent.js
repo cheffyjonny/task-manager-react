@@ -1,10 +1,11 @@
-import { useState } from 'react'
-import PopupModal from './PopupModal'
+import { useState, useRef } from 'react'
+import PopupCalendarModal from './PopupCalendarInput'
 
-const AddTask = ({ onAdd }) => {
+const AddEvent = ({ onAdd }) => {
   const [text, setText] = useState('')
   const [date, setDate] = useState(new Date())
-  const [reminder, setReminder] = useState(false)
+  // const [reminder, setReminder] = useState(false)
+  const inputRef = useRef(null)
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -14,11 +15,12 @@ const AddTask = ({ onAdd }) => {
       return
     }
 
-    onAdd({ text, date, reminder })
+    onAdd({ text, date })
 
     setText('')
     setDate(new Date())
-    setReminder(false)
+    // setReminder(false)
+    inputRef.current.focus()
   }
 
   const handleChangeDate = (e) => {
@@ -34,6 +36,7 @@ const AddTask = ({ onAdd }) => {
         <label>Event</label>
         <input
           autoFocus
+          ref={inputRef}
           type='text'
           placeholder='Add Event'
           value={text}
@@ -42,14 +45,14 @@ const AddTask = ({ onAdd }) => {
       </div>
       <div className='form-control'>
         <label>Date</label>
-        <PopupModal
+        <PopupCalendarModal
           onChangeDate={(e) => {
             handleChangeDate(e)
           }}
           date={date}
         />
       </div>
-      <div className='form-control form-control-check'>
+      {/* <div className='form-control form-control-check'>
         <label>Set Reminder</label>
         <input
           type='checkbox'
@@ -57,7 +60,7 @@ const AddTask = ({ onAdd }) => {
           value={reminder}
           onChange={(e) => setReminder(e.currentTarget.checked)}
         />
-      </div>
+      </div> */}
 
       <input
         type='submit'
@@ -68,4 +71,4 @@ const AddTask = ({ onAdd }) => {
   )
 }
 
-export default AddTask
+export default AddEvent

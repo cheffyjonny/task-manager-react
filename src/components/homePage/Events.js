@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react'
+import AddEvent from './AddEvent'
 import Event from './Event'
 
-const Events = () => {
+const Events = ({ showAddTask }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [events, setTasks] = useState([])
+  const [events, setEvent] = useState([])
 
   useEffect(() => {
     // Fetch Events
-    const fetchEvents = async () => {
+    const fetchTasks = async () => {
       setIsLoading(true)
       try {
         const res = await fetch('http://localhost:3500/events')
         const data = await res.json()
-        setTasks(data)
+        setEvent(data)
       } catch (e) {
         console.log(e)
       } finally {
@@ -20,15 +21,26 @@ const Events = () => {
       }
     }
 
-    fetchEvents()
+    fetchTasks()
   }, [])
 
-  // Fetch Single Event
-  const fetchEvent = async (id) => {
-    const res = await fetch(`http://localhost:3500/events/${id}`)
+  // Add Task
+  const handleAddEvent = async (task) => {
+    const res = await fetch(`http://localhost:3500/events`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(task),
+    })
+
     const data = await res.json()
 
-    return data
+    setEvent([...events, data])
+    // const id = Math.floor(Math.random() * 10000) + 1
+
+    // const newTask = { id, ...task }
+    // setEvent([...events, newTask])
   }
 
   // Delete Task
@@ -37,13 +49,12 @@ const Events = () => {
       method: 'DELETE',
     })
 
-    setTasks(events.filter((task) => task.id !== id))
+    setEvent(events.filter((task) => task.id !== id))
   }
 
-  // Toggle Reminder
-  const toggleReminder = async (id) => {
-    const taskToToggle = await fetchEvent(id)
-    const updTask = { ...taskToToggle, reminder: !taskToToggle.reminder }
+  // Edit Task
+  const handleEditTask = async (id, { payload }) => {
+    const updTask = { text: payload.text, date: payload.date }
     const res = await fetch(`http://localhost:3500/events/${id}`, {
       method: 'PUT',
       headers: {
@@ -54,15 +65,16 @@ const Events = () => {
 
     const data = await res.json()
 
-    setTasks(
+    setEvent(
       events.map((task) =>
-        task.id === id ? { ...task, reminder: data.reminder } : task
+        task.id === id ? { ...task, text: data.text, date: data.date } : task
       )
     )
   }
 
   return (
     <>
+      {showAddTask && <AddEvent onAdd={handleAddEvent} />}
       {events.length > 0 ? (
         <>
           {events.map((task) => (
@@ -70,11 +82,11 @@ const Events = () => {
               key={task.id}
               task={task}
               onDelete={deleteTask}
-              onToggle={toggleReminder}
+              onEdit={handleEditTask}
             />
           ))}
           <p style={{ opacity: 0.3, fontSize: '0.8rem' }}>
-            (Double click to set reminder)
+            (Double click to edit the task)
           </p>
         </>
       ) : (

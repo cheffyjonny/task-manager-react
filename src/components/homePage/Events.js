@@ -24,43 +24,39 @@ const Events = ({ showAddTask }) => {
     fetchTasks()
   }, [])
 
-  // Add Task
-  const handleAddEvent = async (task) => {
+  // Add Event
+  const handleAddEvent = async (event) => {
     const res = await fetch(`http://localhost:3500/events`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
       },
-      body: JSON.stringify(task),
+      body: JSON.stringify(event),
     })
 
     const data = await res.json()
 
     setEvent([...events, data])
-    // const id = Math.floor(Math.random() * 10000) + 1
-
-    // const newTask = { id, ...task }
-    // setEvent([...events, newTask])
   }
 
-  // Delete Task
-  const deleteTask = async (id) => {
+  // Delete Event
+  const deleteEvent = async (id) => {
     await fetch(`http://localhost:3500/events/${id}`, {
       method: 'DELETE',
     })
 
-    setEvent(events.filter((task) => task.id !== id))
+    setEvent(events.filter((event) => event.id !== id))
   }
 
-  // Edit Task
-  const handleEditTask = async (id, { payload }) => {
-    const updTask = { text: payload.text, date: payload.date }
+  // Edit Event
+  const handleEditEvent = async (id, { payload }) => {
+    const updEvent = { text: payload.text, date: payload.date }
     const res = await fetch(`http://localhost:3500/events/${id}`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
       },
-      body: JSON.stringify(updTask),
+      body: JSON.stringify(updEvent),
     })
 
     const data = await res.json()
@@ -81,12 +77,12 @@ const Events = ({ showAddTask }) => {
             <Event
               key={task.id}
               task={task}
-              onDelete={deleteTask}
-              onEdit={handleEditTask}
+              onDelete={deleteEvent}
+              onEdit={handleEditEvent}
             />
           ))}
           <p style={{ opacity: 0.3, fontSize: '0.8rem' }}>
-            (Double click to edit the task)
+            (Double click to edit the event)
           </p>
         </>
       ) : (
